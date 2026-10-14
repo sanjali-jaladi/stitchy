@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="description" content="stitchy: find words that contain every shown letter. 120 seconds." />
+    <meta name="color-scheme" content="light dark" />
+    <title>stitchy</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%231e1f22'/%3E%3Ctext x='8' y='12' font-family='monospace' font-size='11' text-anchor='middle' fill='%23e2b714'%3Es%3C/text%3E%3C/svg%3E" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap"
+    />
+    <script>
+      // Apply the saved theme before first paint to avoid a flash.
+      try {
+        var t = localStorage.getItem('stitchy:theme');
+        if (t === 'dark') document.documentElement.dataset.theme = 'dark';
+      } catch (e) {}
+    </script>
+  </head>
+  <body>
+    <div class="app" id="app" data-screen="home">
+      <header class="top">
+        <div class="top-left">
+          <button type="button" class="brand" id="brand" aria-label="stitchy, back to home">stitchy</button>
+          <span class="timer" id="timer" aria-hidden="true">120</span>
+        </div>
+        <div class="count" id="count" aria-hidden="true">0</div>
+      </header>
+
+      <main class="stage">
+        <section class="home" id="home" aria-labelledby="home-title">
+          <h1 class="title" id="home-title">stitchy</h1>
+          <p class="tagline">stitch a word with the letters shown</p>
+          <ul class="variations" id="variations" aria-label="choose a variation">
+            <li>
+              <button type="button" data-mode="2">
+                <svg class="icon icon-line" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 12H20"/><circle cx="4" cy="12" r="1.6"/><circle cx="20" cy="12" r="1.6"/></svg>
+                <span class="name">2</span><span class="desc">two letters</span>
+              </button>
+            </li>
+            <li>
+              <button type="button" data-mode="3">
+                <svg class="icon icon-triangle" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 4L18.93 16H5.07Z"/><circle cx="12" cy="4" r="1.6"/><circle cx="18.93" cy="16" r="1.6"/><circle cx="5.07" cy="16" r="1.6"/></svg>
+                <span class="name">3</span><span class="desc">three letters</span>
+              </button>
+            </li>
+            <li>
+              <button type="button" data-mode="4">
+                <svg class="icon icon-square" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6.5 6.5H17.5V17.5H6.5Z"/><circle cx="6.5" cy="6.5" r="1.6"/><circle cx="17.5" cy="6.5" r="1.6"/><circle cx="17.5" cy="17.5" r="1.6"/><circle cx="6.5" cy="17.5" r="1.6"/></svg>
+                <span class="name">4</span><span class="desc">four letters</span>
+              </button>
+            </li>
+            <li>
+              <button type="button" data-mode="combo">
+                <svg class="icon icon-combo" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 12L20 12L20 12L4 12Z"><animate attributeName="d" dur="7s" repeatCount="indefinite" calcMode="spline" keyTimes="0;0.25;0.333;0.583;0.667;0.917;1" keySplines="0 0 1 1;0.4 0 0.2 1;0 0 1 1;0.4 0 0.2 1;0 0 1 1;0.4 0 0.2 1" values="M4 12L20 12L20 12L4 12Z;M4 12L20 12L20 12L4 12Z;M12 4L12 4L18.93 16L5.07 16Z;M12 4L12 4L18.93 16L5.07 16Z;M6.5 6.5L17.5 6.5L17.5 17.5L6.5 17.5Z;M6.5 6.5L17.5 6.5L17.5 17.5L6.5 17.5Z;M4 12L20 12L20 12L4 12Z"/></path><circle cx="4" cy="12" r="1.6"><animate attributeName="cx" dur="7s" repeatCount="indefinite" calcMode="spline" keyTimes="0;0.25;0.333;0.583;0.667;0.917;1" keySplines="0 0 1 1;0.4 0 0.2 1;0 0 1 1;0.4 0 0.2 1;0 0 1 1;0.4 0 0.2 1" values="4;4;12;12;6.5;6.5;4"/><animate attributeName="cy" dur="7s" repeatCount="indefinite" calcMode="spline" keyTimes="0;0.25;0.333;0.583;0.667;0.917;1" keySplines="0 0 1 1;0.4 0 0.2 1;0 0 1 1;0.4 0 0.2 1;0 0 1 1;0.4 0 0.2 1" values="12;12;4;4;6.5;6.5;12"/></circle><circle cx="20" cy="12" r="1.6"><animate attributeName="cx" dur="7s" repeatCount="indefinite" calcMode="spline" keyTimes="0;0.25;0.333;0.583;0.667;0.917;1" keySplines="0 0 1 1;0.4 0 0.2 1;0 0 1 1;0.4 0 0.2 1;0 0 1 1;0.4 0 0.2 1" values="20;20;12;12;17.5;17.5;20"/><animate attributeName="cy" dur="7s" repeatCount="indefinite" calcMode="spline" keyTimes="0;0.25;0.333;0.583;0.667;0.917;1" keySplines="0 0 1 1;0.4 0 0.2 1;0 0 1 1;0.4 0 0.2 1;0 0 1 1;0.4 0 0.2 1" values="12;12;4;4;6.5;6.5;12"/></circle><circle cx="20" cy="12" r="1.6"><animate attributeName="cx" dur="7s" repeatCount="indefinite" calcMode="spline" keyTimes="0;0.25;0.333;0.583;0.667;0.917;1" keySplines="0 0 1 1;0.4 0 0.2 1;0 0 1 1;0.4 0 0.2 1;0 0 1 1;0.4 0 0.2 1" values="20;20;18.93;18.93;17.5;17.5;20"/><animate attributeName="cy" dur="7s" repeatCount="indefinite" calcMode="spline" keyTimes="0;0.25;0.333;0.583;0.667;0.917;1" keySplines="0 0 1 1;0.4 0 0.2 1;0 0 1 1;0.4 0 0.2 1;0 0 1 1;0.4 0 0.2 1" values="12;12;16;16;17.5;17.5;12"/></circle><circle cx="4" cy="12" r="1.6"><animate attributeName="cx" dur="7s" repeatCount="indefinite" calcMode="spline" keyTimes="0;0.25;0.333;0.583;0.667;0.917;1" keySplines="0 0 1 1;0.4 0 0.2 1;0 0 1 1;0.4 0 0.2 1;0 0 1 1;0.4 0 0.2 1" values="4;4;5.07;5.07;6.5;6.5;4"/><animate attributeName="cy" dur="7s" repeatCount="indefinite" calcMode="spline" keyTimes="0;0.25;0.333;0.583;0.667;0.917;1" keySplines="0 0 1 1;0.4 0 0.2 1;0 0 1 1;0.4 0 0.2 1;0 0 1 1;0.4 0 0.2 1" values="12;12;16;16;17.5;17.5;12"/></circle></svg>
+                <span class="name">combo</span><span class="desc">a combo of 2, 3 and 4 letters</span>
+              </button>
+            </li>
+          </ul>
+        </section>
+
+        <section class="ready" id="ready" aria-labelledby="ready-title">
+          <p class="ready-mode" id="ready-mode"></p>
+          <h1 class="ready-time" id="ready-title"><span id="ready-seconds">120</span> seconds</h1>
+          <p class="ready-rule">type words that contain every letter shown.</p>
+          <p class="ready-best" id="ready-best"></p>
+          <button type="button" class="start" id="start">press <kbd>enter</kbd> to start</button>
+        </section>
+
+        <section class="play" id="play">
+          <div class="mode-icon" id="mode-icon" aria-hidden="true"></div>
+          <div class="letters" id="letters" role="img" aria-label=""></div>
+          <input
+            id="entry"
+            class="entry"
+            type="text"
+            inputmode="text"
+            enterkeyhint="go"
+            autocorrect="off"
+            autocapitalize="off"
+            autocomplete="off"
+            spellcheck="false"
+            maxlength="40"
+            aria-label="type a word that contains every letter shown"
+            aria-describedby="feedback"
+            disabled
+          />
+          <div class="feedback" id="feedback"></div>
+          <ol class="trail" id="trail" aria-label="recent words"></ol>
+        </section>
+
+        <section class="results" id="results" aria-labelledby="results-title">
+          <h1 class="sr-only" id="results-title">results</h1>
+          <dl class="stats" id="stats"></dl>
+          <figure class="lengths" id="lengths">
+            <figcaption>word lengths <span class="readout" id="length-readout" aria-hidden="true"></span></figcaption>
+            <div class="bars" id="length-bars" aria-hidden="true"></div>
+            <table class="sr-only" id="length-table"></table>
+          </figure>
+          <p class="summary" id="summary"></p>
+          <ol class="history" id="history" aria-label="every set this game"></ol>
+          <button type="button" class="again" id="again"><kbd>enter</kbd> play again</button>
+        </section>
+      </main>
+
+      <footer class="foot">
+        <div class="keys" id="keys"></div>
+        <button type="button" class="key theme" id="theme">dark theme</button>
+      </footer>
+
+      <div class="sr-only" id="live" aria-live="polite" aria-atomic="true"></div>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
