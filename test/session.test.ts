@@ -13,6 +13,7 @@ function scripted(...sets: string[][]): SetGenerator {
       return { letters, key: `${i}`, solutions: 99, examples: ['ex1', 'ex2', 'ex3'] };
     },
     solutionsFor: () => [],
+    easySolutionsFor: () => [],
   };
 }
 

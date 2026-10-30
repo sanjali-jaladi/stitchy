@@ -11,9 +11,17 @@ export type Rejection =
 
 export type Validation = { ok: true; word: string } | Rejection;
 
+/** Shortest word the game accepts, in every variation. */
+export const MIN_WORD_LENGTH = 4;
+
+/** Accepted words are longer than the set and at least `MIN_WORD_LENGTH` letters. */
+export function isLongEnough(word: string, letters: readonly string[]): boolean {
+  return word.length > letters.length && word.length >= MIN_WORD_LENGTH;
+}
+
 /**
  * A word is accepted only when it is spelled exactly as in the dictionary,
- * contains every shown letter (repeats included), is longer than the set,
+ * contains every shown letter (repeats included), is long enough,
  * and hasn't been used yet this session.
  */
 export function validateWord(
@@ -27,7 +35,7 @@ export function validateWord(
   if (!isLettersOnly(word)) return { ok: false, reason: 'letters-only' };
   const missing = missingLetters(word, letters);
   if (missing.length) return { ok: false, reason: 'missing', missing };
-  if (word.length <= letters.length) return { ok: false, reason: 'too-short' };
+  if (!isLongEnough(word, letters)) return { ok: false, reason: 'too-short' };
   if (!dictionary.has(word)) return { ok: false, reason: 'not-a-word' };
   if (used.has(word)) return { ok: false, reason: 'already-used' };
   return { ok: true, word };

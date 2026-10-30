@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { createDictionary, parseWordList } from '../src/game/dictionary';
 import { containsAll, litLetters, missingLetters } from '../src/game/letters';
-import { describeRejection, validateWord } from '../src/game/validate';
+import { describeRejection, MIN_WORD_LENGTH, validateWord } from '../src/game/validate';
 import { realLists } from './helpers';
 
 const dict = createDictionary(['water', 'great', 'arena', 'teeth', 'eat', 'tree', 'see', 'seen', 'rae']);
@@ -63,6 +63,18 @@ describe('letter matching', () => {
   it('requires the word to be longer than the set', () => {
     expect(validateWord('rae', ['r', 'a', 'e'], dict, none)).toEqual({ ok: false, reason: 'too-short' });
     expect(validateWord('eat', ['e', 'a', 't'], dict, none)).toEqual({ ok: false, reason: 'too-short' });
+  });
+
+  it('never accepts a word under four letters, even on a two-letter set', () => {
+    expect(MIN_WORD_LENGTH).toBe(4);
+    const short = createDictionary(['as', 'see', 'seen', 's']);
+    for (const word of ['s', 'as', 'see']) {
+      expect(validateWord(word, ['s'], short, none).ok, word).toBe(false);
+      expect(validateWord(word, [...word], short, none).ok, word).toBe(false);
+    }
+    expect(validateWord('as', ['a', 's'], short, none)).toEqual({ ok: false, reason: 'too-short' });
+    expect(validateWord('see', ['s', 'e'], short, none)).toEqual({ ok: false, reason: 'too-short' });
+    expect(validateWord('seen', ['s', 'e'], short, none)).toEqual({ ok: true, word: 'seen' });
   });
 
   it('rejects words already used this session', () => {

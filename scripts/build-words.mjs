@@ -21,9 +21,14 @@ function load(variants, levels) {
 const ALL_LEVELS = [10, 20, 35, 40, 50, 55, 60, 70];
 // Spelling validation: everything up to SCOWL size 70, all spelling variants.
 const dictionary = load(['english', 'american', 'british', 'canadian', 'australian'], ALL_LEVELS);
-// Set generation / example words: the most common words only.
+// Set generation / example words: common words, up to SCOWL size 25. SCOWL has no
+// tier between 20 and 35, so that is sizes 10 and 20. Widening this to 35 pulls in
+// words like `ambidextrous`, which letter sets then get carved out of.
+const COMMON_LEVELS = [10, 20];
 const common = new Set(
-  [...load(['english', 'american'], [10, 20])].filter((w) => w.length >= 3 && dictionary.has(w)),
+  [...load(['english', 'american'], COMMON_LEVELS)].filter(
+    (w) => w.length >= 3 && dictionary.has(w),
+  ),
 );
 
 const write = (name, set) =>

@@ -70,3 +70,12 @@ const VOWELS = new Set(['a', 'e', 'i', 'o', 'u']);
 export function hasHardConsonant(letters: readonly string[]): boolean {
   return letters.some((l) => !VOWELS.has(l) && l !== 's');
 }
+
+export function countVowels(letters: readonly string[]): number {
+  return letters.reduce((n, l) => (VOWELS.has(l) ? n + 1 : n), 0);
+}
+
+/** True when no letter appears twice, so `["r","a","e"]` but not `["r","a","r"]`. */
+export function allDistinct(letters: readonly string[]): boolean {
+  return new Set(letters).size === letters.length;
+}
