@@ -142,6 +142,7 @@ kbd {
 .ready,
 .play,
 .results,
+.howto-open,
 .timer,
 .count {
   display: none;
@@ -151,6 +152,10 @@ kbd {
 .app[data-screen='playing'] .play,
 .app[data-screen='results'] .results {
   display: flex;
+}
+/* A flex item of .foot, so any non-none value blockifies. */
+.app[data-screen='home'] .howto-open {
+  display: block;
 }
 .app[data-screen='home'] .brand,
 .app[data-screen='playing'] .brand {
@@ -658,6 +663,85 @@ kbd {
   color: var(--text);
 }
 
+/* ---------- how to play (dialog, opened from the home footer) ---------- */
+
+.howto {
+  /* ch is measured at this element's font-size, and the padding sits inside it. */
+  width: min(68ch, calc(100vw - 2rem));
+  max-width: none;
+  padding: 1.5rem;
+  border: 1px solid var(--sub-faint);
+  border-radius: 6px;
+  background: var(--bg);
+  color: var(--sub);
+  font-size: 0.8rem;
+  line-height: 1.55;
+}
+
+.howto[open] {
+  animation: fade-in var(--med) ease-out;
+}
+
+.howto::backdrop {
+  background: rgb(0 0 0 / 0.45);
+}
+
+.howto-title {
+  margin: 0 0 0.75rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--text);
+}
+
+.howto-rules {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  /* Sentences wrap onto two lines, so bullets need clear air between them. */
+  gap: 0.6rem;
+}
+
+/* Hanging marker so wrapped lines align with the text, not the dot. Kept as a
+   text indent rather than a grid: a grid would make every inline child of the
+   item its own grid cell and break up the sentence. */
+.howto-rules li {
+  padding-left: 0.9rem;
+  text-indent: -0.9rem;
+}
+
+.howto-rules li::before {
+  content: '·';
+  display: inline-block;
+  width: 0.9rem;
+  text-indent: 0;
+  color: var(--sub-faint);
+}
+
+/* The letters that do the work in the example. */
+.howto em {
+  font-style: normal;
+  color: var(--accent);
+}
+
+.howto-letters {
+  letter-spacing: 0.08em;
+  color: var(--text);
+  white-space: nowrap;
+}
+
+.howto-close {
+  margin-top: 1.25rem;
+  color: var(--sub);
+  transition: color var(--fast);
+}
+
+.howto-close:hover {
+  color: var(--text);
+}
+
 /* ---------- footer ---------- */
 
 .foot {
@@ -765,6 +849,10 @@ kbd {
   }
   .stats {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .howto {
+    padding: 1.25rem;
+    font-size: 0.75rem;
   }
 }
 

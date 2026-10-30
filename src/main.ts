@@ -34,6 +34,9 @@ const historyEl = $('history');
 const againEl = $('again');
 const keysEl = $('keys');
 const themeEl = $('theme');
+const howtoEl = $<HTMLDialogElement>('howto');
+const howtoOpenEl = $('howto-open');
+const howtoCloseEl = $('howto-close');
 const liveEl = $('live');
 
 const TRAIL_LENGTH = 5;
@@ -476,6 +479,24 @@ themeEl.addEventListener('click', () => {
   focusEntry();
 });
 
+// ---------- how to play ----------
+
+howtoOpenEl.addEventListener('click', () => howtoEl.showModal());
+howtoCloseEl.addEventListener('click', () => howtoEl.close());
+
+// Clicking the backdrop closes it. A click on the dialog's own padding also targets
+// the dialog, so compare against its box rather than trusting the target alone.
+howtoEl.addEventListener('click', (e) => {
+  if (e.target !== howtoEl) return;
+  const box = howtoEl.getBoundingClientRect();
+  const outside =
+    e.clientX < box.left || e.clientX > box.right || e.clientY < box.top || e.clientY > box.bottom;
+  if (outside) howtoEl.close();
+});
+
+// Focus returns to the trigger, which is where the reader left off.
+howtoEl.addEventListener('close', () => howtoOpenEl.focus());
+
 // ---------- input ----------
 
 entry.addEventListener('input', () => {
@@ -487,6 +508,9 @@ entry.addEventListener('input', () => {
 
 document.addEventListener('keydown', (e) => {
   if (e.isComposing || e.metaKey || e.ctrlKey || e.altKey) return;
+  // The dialog owns the keyboard while it's open, so `c` doesn't start a game
+  // behind it. Escape closes it natively.
+  if (howtoEl.open) return;
   const onButton = e.target instanceof HTMLButtonElement;
 
   switch (screen) {

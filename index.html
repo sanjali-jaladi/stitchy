@@ -66,7 +66,7 @@
         <section class="ready" id="ready" aria-labelledby="ready-title">
           <p class="ready-mode" id="ready-mode"></p>
           <h1 class="ready-time" id="ready-title"><span id="ready-seconds">120</span> seconds</h1>
-          <p class="ready-rule">type words that contain every letter shown.</p>
+          <p class="ready-rule">type words of four letters or more that contain every letter shown.</p>
           <p class="ready-best" id="ready-best"></p>
           <button type="button" class="start" id="start">press <kbd>enter</kbd> to start</button>
         </section>
@@ -108,9 +108,30 @@
       </main>
 
       <footer class="foot">
+        <!-- Home only; on every other screen the empty #keys takes the left slot. -->
+        <button type="button" class="key howto-open" id="howto-open" aria-haspopup="dialog">
+          how to play
+        </button>
         <div class="keys" id="keys"></div>
         <button type="button" class="key theme" id="theme">dark theme</button>
       </footer>
+
+      <dialog class="howto" id="howto" aria-labelledby="howto-title">
+        <h2 class="howto-title" id="howto-title">how to play</h2>
+        <ul class="howto-rules">
+          <li>your word must contain <em>every</em> letter shown, in any order and any
+            position. with <span class="howto-letters">r a e</span> you could play
+            w<em>a</em>t<em>er</em> or g<em>r</em><em>ea</em>t.</li>
+          <li>it must be four letters or more.</li>
+          <li>it must be spelled exactly right, because there is no autocorrect and no
+            partial credit.</li>
+          <li>each word counts once per game, so you cannot play the same word twice.</li>
+          <li>press <kbd>tab</kbd> to move on to new letters.</li>
+        </ul>
+        <button type="button" class="howto-close" id="howto-close">
+          <kbd>esc</kbd> close
+        </button>
+      </dialog>
 
       <div class="sr-only" id="live" aria-live="polite" aria-atomic="true"></div>
     </div>
